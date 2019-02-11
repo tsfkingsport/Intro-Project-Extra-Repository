@@ -1,6 +1,7 @@
 library(dplyr)
 library(ggplot2)
 library(tidyverse)
+library(lubridate)
 #install.packages("xts")
 #library(xts)
 full_rent_df <- read.csv("City_MedianRentalPrice_AllHomes.csv", stringsAsFactors =FALSE)
@@ -21,6 +22,16 @@ rent_tibble <- full_rent_df %>% filter(RegionName  %in% city_list)
 rent_tibble <- rent_tibble[1:18, ]
 #attaching the values associated with New York metro area
 rent_tibble2 <- rent_tibble %>% rbind(new_york_rent)
+#Now I want to figure out how to make the columns into date time with lubridate
+#The one below isn't working out for me
+#rent_tibble2 %>% select(which(substr(colnames(.), 1, 1)=="X"))
+names(rent_tibble2) %>% substring((which(substr(colnames(.), 1, 1)=="X")), 2)
+
+names(rent_tibble2) %>% substring((substr(colnames(.), 1, 1)=="X"), 2)
+
+
+
+
 #transposing the data so the dates are the individual rows
 rent_tibble3<- t(rent_tibble2)
 #changing the column names to the first row of the new tibble, still now entirely sure
@@ -32,6 +43,7 @@ rent_tibble3 <- rent_tibble3[-1,]
 #removing the first four rows so all I am left with is numbers
 rent_tibble4 <- rent_tibble3[-c(1,2,3,4), ]
 
+head(rent_tibble4)
 rent_df <- as.data.frame(rent_tibble4)
 rent_df %>% glimpse()
 #running into a lot of problems trying to graph the time series charts.  

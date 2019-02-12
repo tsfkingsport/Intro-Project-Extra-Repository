@@ -29,8 +29,12 @@ names(rent_tibble2) %>% substring((which(substr(colnames(.), 1, 1)=="X")), 2)
 
 names(rent_tibble2) %>% substring((substr(colnames(.), 1, 1)=="X"), 2)
 
+#THIS ONE WORKS YAY!!!!
+names(rent_tibble2) <-gsub("X","", names(rent_tibble2))
+#Another attempt at trying to cahnge column names. 
 
-
+rent_tibble2 %>% select(which(substr(colnames(.), 1, 1)=="X"))
+colnames(rent_tibble2)[(substr(colnames(rent_tibble2), 1, 1)=="X")]
 
 #transposing the data so the dates are the individual rows
 rent_tibble3<- t(rent_tibble2)

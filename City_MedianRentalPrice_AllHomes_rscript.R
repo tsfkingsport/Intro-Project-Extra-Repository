@@ -25,16 +25,46 @@ rent_tibble2 <- rent_tibble %>% rbind(new_york_rent)
 #Now I want to figure out how to make the columns into date time with lubridate
 #The one below isn't working out for me
 #rent_tibble2 %>% select(which(substr(colnames(.), 1, 1)=="X"))
-names(rent_tibble2) %>% substring((which(substr(colnames(.), 1, 1)=="X")), 2)
 
-names(rent_tibble2) %>% substring((substr(colnames(.), 1, 1)=="X"), 2)
+
 
 #THIS ONE WORKS YAY!!!!
 names(rent_tibble2) <-gsub("X","", names(rent_tibble2))
-#Another attempt at trying to cahnge column names. 
+#Now attempting to turn the columns into lubridate datetime objects
+names(rent_tibble2)
 
-rent_tibble2 %>% select(which(substr(colnames(.), 1, 1)=="X"))
-colnames(rent_tibble2)[(substr(colnames(rent_tibble2), 1, 1)=="X")]
+#multiple failed attempts at trying to cahnge column names. 
+
+
+# Z<-colnames(rent_tibble2)[(substr(colnames(rent_tibble2), 1, 1)=="X")]
+
+#Z<-select(rent_tibble2, starts_with("2"))
+#ymd(select(rent_tibble2,which(substr(colnames(.), 1, 1)==2)), truncated = 2)
+
+#THIS ONE WORKS, I got rid of the . in the column names and replaced them with
+#a - to make it fit the ymd() function.  After that instead of doing the 
+#overly complicated crap I was doing before I just typed in the names of 
+#the columns and truncated = 3 to make it work. Without truncate only a handful
+#of column names work and I don't know what is so special about those columns
+#as opposed to the rest of the columns. THey all appear to be the same format to me
+names(rent_tibble2) <-gsub("\\.","-", names(rent_tibble2))
+ymd(names(rent_tibble2), truncated = 3)
+
+#Now going to try gathering the data so that its more tidy using date as the key
+#and rent as the value
+Z <- rent_tibble2[,-c(2:5)]
+Z<- gather(Z, key = "date", value = "rent", - 1)
+#I think I made it work I am just using Z and Y as placeholder variables before
+#I clean everything up. 
+Y<-Z[order(Z$RegionName),]
+
+
+
+
+
+
+
+
 
 #transposing the data so the dates are the individual rows
 rent_tibble3<- t(rent_tibble2)

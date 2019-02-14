@@ -38,7 +38,26 @@ rent_df<-Z[order(Z$RegionName),]
 rent_df %>% ggplot(aes(x = date, y = rent, colour = RegionName)) +
   geom_point()
 
+write.csv(rent_df, "excluding_NYC_MedianRentalPrice.csv")
 
+rent_df[c(1:540),] %>% ggplot(aes(x = date, y = rent, colour = RegionName)) +
+  geom_point()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#rent_df[ c(1:3),] %>% ggplot(aes(x = date, y = rent, colour = RegionName)) +
+#  geom_point()
 
 #Trying to see how to convert my data into something other then a list.
 #I think data.table has the answer I am looking for but I can explore that later
